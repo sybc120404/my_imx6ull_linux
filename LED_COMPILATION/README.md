@@ -32,8 +32,122 @@
 2. I.MX6ULL IO 初始化流程
 - 使能时钟：**CCGR0-6**这七个寄存器控制6ULL所有外设时钟的使能
 ![CCGR0-6](https://github.com/sybc120404/image4md/blob/main/ccgr0_6.png)
+![CCGR_2_REG](https://github.com/sybc120404/image4md/blob/main/CCGR_2_REG.png)
 - 设置IO复用，如下图，设置SW_MUX_CTL_PAD_GPIO1_IO03 SW MUX Control
 Register 值为`0b0101`
 ![gpio_1_3_1](https://github.com/sybc120404/image4md/blob/main/gpio_1_3_1.png)
 ![gpio_1_3_2](https://github.com/sybc120404/image4md/blob/main/gpio_1_3_2.png)
 - 配置电气属性：配置寄存器，详情查看 32.6.156 SW_PAD_CTL_PAD_GPIO1_IO03 SW PAD Control Register (IOMUXC_SW_PAD_CTL_PAD_GPIO1_IO03)
+- 设置GPIO方向：GPIO_GDIR寄存器为输出；设置GPIO输出值：GPIO_GDIR寄存器
+![gpio_gdir](https://github.com/sybc120404/image4md/blob/main/GPIO_GDIR.png)
+![gpio_dr](https://github.com/sybc120404/image4md/blob/main/GPIO_DR.png)
+
+### 汇编基础
+
+使用GCC交叉编译器，汇编代码需要符合GNU语法。GNU汇编语法适用于所有架构
+
+每条指令有三个可选部分。其中`label`为标号，表示地址位置（注意冒号）；`instruction`为指令；`@`后面为注释
+```
+label: instruction @ comment
+```
+
+
+
+汇编程序的默认入口标号是`_start`
+```
+.global _start
+
+_start:
+        ldr r0, =0x12   @r0=0x12
+```
+上面`.global`是一个伪操作，表示`_start`是一个全局标号，类似C语言全局变量
+
+GNU汇编支持函数，函数格式：
+```
+函数名:
+    函数体
+    返回语句（非必须）
+```
+
+需要注意的小细节
+1. 不允许大小写混用，所有符号都可以全大写或全小写
+
+
+#### 常用指令
+
+#### 寄存器指令
+
+##### MOV
+
+```
+(MOV dst, src)
+MOV R0, R1      @寄存器R1中的数据传递给R0，即R0=R1
+MOV R0, #0x12   @立即数0x12传递给R0寄存器，即R0=0x12
+```
+
+##### MRS
+
+```
+MRS R0, CPSR    @特殊寄存器CPSR中的数据传递给R0
+```
+
+##### MSR
+
+```
+MSR CPSR, R0    @CPSR=R0
+```
+
+#### 存储器访问指令
+
+**ARM不能直接访问存储器，例如RAM类型。I.MX6ULL的寄存器就是RAM类型**
+一般需要先将配置写入Rx(0-12)中，再写入存储器
+
+以下`LDR`和`STR`指令都是按字操作，操作32bit数据
+按字节操作：`LDRB`, `STRB`
+按半字操作：`LDRH`, `STRH`
+
+##### LDR
+
+(Load Register)，从存储器加载数据到寄存器Rx中，可以加载立即数，必须使用`=`而不是`#`
+
+```
+(LDR Rd, [Rn, #offset])   @从存储器Rn+offset的位置读取数据放入Rd
+LDR R0, =0x0209C004         @将寄存器地址0x0209C004写入R0
+LDR R1, [R0]                @将R0位置处存储的数据加载到R1寄存器
+```
+
+**`[]`表示取出该位置存储的数据**
+
+##### STR
+
+(Store Register)，寄存器数据写入存储器中
+
+```
+(STR src, dst)              @注意这里源和目的
+LDR R0, =0x0209C004
+LDR R1, =0x20000002
+STR R1, [R0]                @将R1中写入的值写入到R0保存的地址中
+```
+
+#### 栈操作
+
+包括`PUSH`和`POP`
+
+```
+PUSH <reg list>
+POP <reg list>   
+```
+
+#### 跳转指令
+
+````
+B <label>           @跳转到label
+BX <Rm>             @跳转到Rm中存放的地址处，并切换指令集
+BL <label>          @跳转到label，返回地址保存在LR中
+BLX <Rm>            @跳转到Rm指定的地址，将返回地址存放在LR中，并切换指令集
+````
+
+## 附录
+
+![寄存器组](https://github.com/sybc120404/image4md/blob/main/REG.png)
+![运行模式](https://github.com/sybc120404/image4md/blob/main/MO.png)
