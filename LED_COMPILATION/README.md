@@ -147,6 +147,73 @@ BL <label>          @跳转到label，返回地址保存在LR中
 BLX <Rm>            @跳转到Rm指定的地址，将返回地址存放在LR中，并切换指令集
 ````
 
+## 编译程序
+
+1. 将.c .s文件编译为.o文件
+```
+arm-linux-gnueabihf-gcc -g -c led.s -o led.o
+```
+- `-g`：产生调试信息
+- `-c`：编译源文件，**不链接**
+- `-o`：指定编译产生的文件的名字
+
+2. 将所有.o文件链接为可执行文件.elf
+
+每个会汇编文件和.c文件都会生成一个.o文件，需要链接起来形成可执行文件，**链接到一个起始地址**，即代码运行的起始地址
+对于6ULL，链接起始地址应该指向RAM地址，RAM分为内部RAM（0x900000~0x91ffff）和外部RAM（DDR，0x80000000起始，分256MB和512MB），一般是外部DDR，空间较大
+**本系列裸机代码链接地址都在0x87800000**
+
+```
+arm-linux-gnueabihf-ld -Ttext 0x87800000 led.o -o led.elf
+```
+- `-Ttext`：指定链接地址
+- `-o`：指定链接生成的文件名
+
+3. 将.elf文件转为.bin文件
+格式转换
+```
+arm-linux-gnueabihf-objcopy -O binary -S -g led.elf led.bin
+```
+- `-O`：指定输出的格式，`binary`表示二进制格式输出
+- `-S`：表示不要复制源文件中的重定位信息和符号信息
+- `-g`：不复制源文件中的调试信息
+
+4. 反汇编：.elf文件转为.s （方便C语言调试）
+```
+arm-linux-gnueabihf-objdump -D led.elf > led.dis
+```
+
+- `-D`：反汇编所有的段
+
+以上步骤使用Makefile整理到一起
+
+## 烧写bin文件
+
+STM32需要烧写到内部FLASH
+6ULL支持SD卡\EMMC\NAND\NOR\SPI FLASH启动，裸机例程选择烧写到SD卡中
+
+1. 格式化U盘
+
+![格式化](https://github.com/sybc120404/image4md/blob/main/RESET.png)
+
+2. 烧写bin文件
+
+对于I.MX，不能直接烧写bin文件，必须先添加头部信息，借住imxdownload软件实现
+
+U盘连接到linux上，查看挂载的目录：拔插看一下增加的
+```
+ls /dev/sd* -l
+```
+![dev](https://github.com/sybc120404/image4md/blob/main/dev.png)
+
+烧写命令
+```
+./imxdownload led.bin /dev/sdb(U盘的挂载目录)
+```
+![up](https://github.com/sybc120404/image4md/blob/main/up.png)
+
+ixmdownload会向led.bin添加一个头部，生成新的load.imx文件，把它最终烧写到SD卡
+
 ## 附录
 
 ![寄存器组](https://github.com/sybc120404/image4md/blob/main/REG.png)

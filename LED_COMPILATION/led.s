@@ -3,9 +3,9 @@
 _start:
 
     @ 使能gpio3时钟
-    ldr r0, =0x020c4070     @将0x020C4070的地址（CCGR2）加载到r0寄存器
-    ldr r1, =0x0c000000     @将0x0C000000的地址加载到r1寄存器（bit27-26=0b11）
-    str r1, [r0]            @将r1的值写入r0指向的地址（CCGR2）
+	ldr r1, =0xffffffff
+	ldr r0, =0x020c4070  	/* CCGR2 */
+	str r1, [r0]
 
     @ 设置IO复用
     ldr r0, =0x020e0068
