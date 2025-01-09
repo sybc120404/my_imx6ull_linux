@@ -1,5 +1,7 @@
 objs = start.o led.o
 
+.PHONY : clean
+
 ledc.bin : $(objs)
 	arm-linux-gnueabihf-ld -Timx6ull.lds -o ledc.elf $^
 	arm-linux-gnueabihf-objcopy -O binary -S ledc.elf $@
