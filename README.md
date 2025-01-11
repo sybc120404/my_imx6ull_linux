@@ -11,3 +11,30 @@
 1. LED汇编 - [LED_COMPILATION](./LED_COMPILATION/)
 2. LED_C - [LED_C](./LED_C/)
 3. LED-STM32规范版本 - [LED_STM32](./LED_STM32/)
+
+## 烧写bin文件
+
+STM32需要烧写到内部FLASH
+6ULL支持SD卡\EMMC\NAND\NOR\SPI FLASH启动，裸机例程选择烧写到SD卡中
+
+1. 格式化U盘
+
+![格式化](https://github.com/sybc120404/image4md/blob/main/RESET.png)
+
+2. 烧写bin文件
+
+对于I.MX，不能直接烧写bin文件，必须先添加头部信息，借住imxdownload软件实现
+
+U盘连接到linux上，查看挂载的目录：拔插看一下增加的
+```
+ls /dev/sd* -l
+```
+![dev](https://github.com/sybc120404/image4md/blob/main/dev.png)
+
+烧写命令
+```
+./imxdownload led.bin /dev/sdb(U盘的挂载目录)
+```
+![up](https://github.com/sybc120404/image4md/blob/main/up.png)
+
+ixmdownload会向led.bin添加一个头部，生成新的load.imx文件，把它最终烧写到SD卡
