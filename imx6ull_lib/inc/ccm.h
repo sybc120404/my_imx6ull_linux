@@ -21,7 +21,6 @@
  * @brief Typedefs for the CCM module.
  */
 
-/* CCM外设时钟 */
 typedef struct
 {
     __IO uint32_t CCR;
@@ -133,5 +132,21 @@ typedef struct
 
 #define     CCM                     ((CCM_TYPE *)CCM_BASE)
 #define     CCM_ANALOG              ((CCM_ANALOG_TYPE *)CCM_ANALOG_BASE)
+
+/**
+ * @brief Function declaration for the CCM module.
+ */
+
+/**
+ * @brief Sets a value to a specified address in the CCM (Clock Control Module).
+ *
+ * This function writes a given value to a specified address in the CCM.
+ *
+ * @param addr  Pointer to the address where the value will be set.
+ * @param value The value to be set at the specified address.
+ *
+ * @return An integer indicating the success or failure of the operation.
+ */
+int ccm_reg_set_value(__IO uint32_t *addr, uint32_t value);
 
 #endif

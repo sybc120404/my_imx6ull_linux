@@ -1,7 +1,8 @@
 #ifndef __BSP_LED_H
 #define __BSP_LED_H
 
-#include "imx6u.h"
+#include "gpio.h"
+#include "iomux.h"
 
 #ifdef __cplusplus
 extern "C" {

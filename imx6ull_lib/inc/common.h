@@ -12,6 +12,12 @@
 #define __COMMON_H_
 
 /**
+ * @brief Include files for the common module.
+ */
+
+#include <stddef.h>
+
+/**
  * @brief Typedefs for the common module.
  */
 

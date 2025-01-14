@@ -1,18 +1,19 @@
-#include "bsp_clk.h"
-#include "bsp_delay.h"
+#include "ccm.h"
+#include "delay.h"
 #include "bsp_led.h"
 
 int main(void)
 {
-    clk_enable();   /* 使能GPIO1时钟 */
+    /* 使能GPIO1时钟 */
+    ccm_reg_set_value(&(CCM->CCGR2), 0xffffffff);
     led_init();     /* 初始化led */
 
     while(1)
     {
         led_switch(LED_ON);   /* 点亮led */
-        delay(500); /* 延时500ms */
+        delay(2000); /* 延时2s */
         led_switch(LED_OFF);  /* 熄灭led */
-        delay(500); /* 延时500ms */
+        delay(500); /* 延时0.5s */
     }
 
     return 0;

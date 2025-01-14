@@ -324,4 +324,32 @@ typedef struct
 #define     IOMUX_SW_MUX		    ((IOMUX_SW_MUX_TYPE *)IOMUX_SW_MUX_BASE)
 #define     IOMUX_SW_PAD		    ((IOMUX_SW_PAD_TYPE *)IOMUX_SW_PAD_BASE)
 
+/**
+ * @brief Function declaration for the IOMUX module.
+ */
+
+/**
+ * @brief Sets a value to a specified address in the IOMUX (Input/Output Multiplexer).
+ *
+ * This function writes a given value to a specified address in the IOMUX.
+ *
+ * @param addr  Pointer to the address where the value will be set.
+ * @param value The value to be set at the specified address.
+ *
+ * @return An integer indicating the success or failure of the operation.
+ */
+int iomux_mux_reg_set_value(__IO uint32_t *addr, uint32_t value);
+
+/**
+ * @brief Sets a value to a specified address in the IOMUX pad register.
+ *
+ * This function writes a given value to a specified address in the IOMUX pad register.
+ *
+ * @param addr  Pointer to the address where the value will be set.
+ * @param value The value to be set at the specified address.
+ *
+ * @return An integer indicating the success or failure of the operation.
+ */
+int iomux_pad_reg_set_value(__IO uint32_t *addr, uint32_t value);
+
 #endif
