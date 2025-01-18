@@ -1,52 +1,46 @@
 CROSS_COMPILE 	?= arm-linux-gnueabihf-
-
-LED_BSP_DIR 	:= LED_BSP
-
 CC 				:= $(CROSS_COMPILE)gcc
 LD 				:= $(CROSS_COMPILE)ld
 OBJCOPY 		:= $(CROSS_COMPILE)objcopy
 OBJDUMP 		:= $(CROSS_COMPILE)objdump
 
-INCDIRS_LED 	:= imx6ull_lib/inc \
-					$(LED_BSP_DIR)/bsp/led \
-SRCDIRS_LED 	:= imx6ull_lib/src \
-				   	$(LED_BSP_DIR)/project \
-				   	$(LED_BSP_DIR)/led \
+LED_INCLUDE_DIR				:= LED_BSP/bsp/led/
+IMX6ULL_LIB_INCLUDE_DIR		:= imx6ull_lib/inc/
 
-INCLUDES_LED 	:= $(patsubst %, -I%, $(INCDIRS_LED))
+LED := LED_BSP/led.bin
 
-SFILES_LED			:= $(foreach dir, $(SRCDIRS_LED), $(wildcard $(dir)/*.s))
-CFILES_LED 			:= $(foreach dir, $(SRCDIRS_LED), $(wildcard $(dir)/*.c))
+.PHONY: clean all led
 
-SFILENDIR_LED 		:= $(notdir $(SFILES_LED))
-CFILENDIR_LED 		:= $(notdir $(CFILES_LED))
+all: $(LED)
 
-SOBJS_LED 			:= $(patsubst %, obj/%, $(SFILENDIR_LED:.s=.o))
-COBJS_LED 			:= $(patsubst %, obj/%, $(CFILENDIR_LED:.c=.o))
+led: $(LED)
+	@echo "make led DONE"
 
-OBJS_LED			:= $(SOBJS_LED) $(COBJS_LED)
+$(LED) : imx6ull_lib/obj/ccm.o imx6ull_lib/obj/delay.o imx6ull_lib/obj/gpio.o imx6ull_lib/obj/iomux.o LED_BSP/obj/bsp_led.o LED_BSP/obj/start.o LED_BSP/obj/main.o
+	$(LD) -TLED_BSP/imx6ull.lds -o LED_BSP/led.elf $^
+	$(OBJCOPY) -O binary -S LED_BSP/led.elf $@
+	$(OBJDUMP) -D LED_BSP/led.elf > LED_BSP/led.dis
 
-VPATH 			:= $(SRCDIRS_LED)
+LED_BSP/obj/bsp_led.o : LED_BSP/bsp/led/bsp_led.c
+	$(CC) -O2 -Wall -nostdlib -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
-TARGET_LED		:= led
-TARGET_BEEP		:= beep
-
-.PHONY: all led_clean
-
-all: led
-
-led: $(TARGET_LED).bin
-
-$(LED_BSP_DIR)/$(TARGET_LED).bin: $(LED_BSP_DIR)/$(OBJS_LED)
-	$(LD) -T$(LED_BSP_DIR)/imx6ull.lds -o $(LED_BSP_DIR)/$(TARGET_LED).elf $^
-	$(OBJCOPY) -O binary -S $(LED_BSP_DIR)/$(TARGET_LED).elf $@
-	$(OBJDUMP) -D $(TARGET_LED).elf > $(TARGET_LED).dis
-
-$(LED_BSP_DIR)/$(SOBJS_LED): $(LED_BSP_DIR)/obj/%.o: %.s
+LED_BSP/obj/start.o : LED_BSP/project/start.s
 	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
 
-$(LED_BSP_DIR)/$(COBJS_LED): $(LED_BSP_DIR)/obj/%.o: %.c
-	$(CC) -O2 -Wall -c $(INCLUDES_LED) -o $@ $<
+LED_BSP/obj/main.o : LED_BSP/project/main.c
+	$(CC) -O2 -Wall -nostdlib -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
-led_clean:
-	rm -rf $(LED_BSP_DIR)/$(TARGET_LED).bin $(LED_BSP_DIR)/$(TARGET_LED).elf $(LED_BSP_DIR)/$(TARGET_LED).dis $(LED_BSP_DIR)/$(OBJS_LED)
+imx6ull_lib/obj/ccm.o : imx6ull_lib/src/ccm.c
+	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+
+imx6ull_lib/obj/delay.o : imx6ull_lib/src/delay.c
+	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+
+imx6ull_lib/obj/gpio.o : imx6ull_lib/src/gpio.c
+	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+
+imx6ull_lib/obj/iomux.o : imx6ull_lib/src/iomux.c
+	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+
+clean:
+	rm -rf LED_BSP/led.bin LED_BSP/led.elf LED_BSP/led.dis imx6ull_lib/obj/*.o LED_BSP/obj/*.o LED_BSP/load.imx

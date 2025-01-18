@@ -24,9 +24,8 @@
 
 int iomux_mux_reg_set_value(__IO uint32_t *addr, uint32_t value)
 {
-    if(NULL == addr || addr < IOMUX_SW_MUX_BASE || addr >= (IOMUX_SW_MUX_BASE + sizeof(IOMUX_SW_MUX_TYPE)))
+    if(NULL == addr)
     {
-        printf("error addr\r\n");
         return -1;
     }
 
@@ -37,9 +36,8 @@ int iomux_mux_reg_set_value(__IO uint32_t *addr, uint32_t value)
 
 int iomux_pad_reg_set_value(__IO uint32_t *addr, uint32_t value)
 {
-    if(NULL == addr || addr < IOMUX_SW_PAD_BASE || addr >= (IOMUX_SW_PAD_BASE + sizeof(IOMUX_SW_PAD_TYPE)))
+    if(NULL == addr)
     {
-        printf("error addr\r\n");
         return -1;
     }
 

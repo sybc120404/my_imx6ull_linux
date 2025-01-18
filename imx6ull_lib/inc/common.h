@@ -15,6 +15,7 @@
  * @brief Include files for the common module.
  */
 
+#include <stdio.h>
 #include <stddef.h>
 
 /**

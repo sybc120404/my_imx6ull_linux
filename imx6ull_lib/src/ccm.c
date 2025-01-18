@@ -24,9 +24,8 @@
 
 int ccm_reg_set_value(__IO uint32_t *addr, uint32_t value)
 {
-    if(NULL == addr || addr < CCM_BASE || addr >= (CCM_BASE + sizeof(CCM_TYPE)))
+    if(NULL == addr)
     {
-        printf("error addr\r\n");
         return -1;
     }
 

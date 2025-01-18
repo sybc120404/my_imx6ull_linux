@@ -2,7 +2,7 @@ SECTIONS{
     . = 0x87800000;
     .text :
     {
-        obj/start.o
+        LED_BSP/obj/start.o
         *(.text)
     }
     .rodata ALIGN(4) : {*(.rodata)}

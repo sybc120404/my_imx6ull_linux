@@ -2,6 +2,10 @@
 
 记录I.MX6ULL_LINUX开发板使用
 
+各工程构建目标产物命令：
+
+LED_BSP: `make led`
+
 ## some notes
 
 1. Makefile基本知识 - [Makefile](./notes/Makefile_note/)
