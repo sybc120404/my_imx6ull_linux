@@ -19,6 +19,7 @@ static void led_off()
 /* 初始化led */
 void led_init()
 {
+    ccm_reg_set_value(&(CCM->CCGR2), 0xffffffff);                       /* 使能GPIO1时钟 */
     iomux_mux_reg_set_value(&(IOMUX_SW_MUX->GPIO1_IO03), 0x5);         /* 复用为GPIO1_IO03 */
     iomux_mux_reg_set_value(&(IOMUX_SW_PAD->GPIO1_IO03), 0x10b0);      /* 设置电气属性 */
     gpio_reg_set_value(&(GPIO1->GDIR), 0x8);    /* 设置为输出 */

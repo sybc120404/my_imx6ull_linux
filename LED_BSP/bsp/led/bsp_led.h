@@ -3,6 +3,7 @@
 
 #include "gpio.h"
 #include "iomux.h"
+#include "ccm.h"
 
 #ifdef __cplusplus
 extern "C" {

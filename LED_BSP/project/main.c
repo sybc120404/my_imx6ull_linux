@@ -1,11 +1,8 @@
-#include "ccm.h"
 #include "delay.h"
 #include "bsp_led.h"
 
 int main(void)
 {
-    /* 使能GPIO1时钟 */
-    ccm_reg_set_value(&(CCM->CCGR2), 0xffffffff);
     led_init();     /* 初始化led */
 
     while(1)

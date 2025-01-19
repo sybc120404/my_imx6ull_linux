@@ -5,10 +5,12 @@
 各工程构建目标产物命令：
 
 LED_BSP: `make led`
+BEEP: `make beep`
 
 ## some notes
 
 1. Makefile基本知识 - [Makefile](./notes/Makefile_note/)
+2. NXP官方库函数 - [NXP_LIB](./notes/nxp_lib_note/)
 
 ## table of contents
 
@@ -16,6 +18,7 @@ LED_BSP: `make led`
 2. LED_C - [LED_C](./LED_C/)
 3. LED-STM32规范版本 - [LED_STM32](./LED_STM32/)
 4. LED-BSP工程管理，规范文件目录 - [LED_BSP](./LED_BSP/)
+5. BEEP，蜂鸣器实验 - [BEEP](./BEEP/)
 
 ## 工程管理
 
