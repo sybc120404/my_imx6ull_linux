@@ -21,3 +21,5 @@
 查看参考手册，SNVS_TAMPER1可以复用为GPIO5_01
 
 ![SNVS_TAMPER1](https://github.com/sybc120404/image4md/blob/main/SNVS_TAMPER1.png)
+
+剩余工作可以使用NXP的SDK接口完成，和LED很类似

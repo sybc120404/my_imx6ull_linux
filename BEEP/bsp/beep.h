@@ -14,10 +14,14 @@
 /**
  * @brief Include files
  */
-#include "ccm.h"
-#include "iomux.h"
-#include "gpio.h"
+#include "fsl_iomuxc.h"
+#include "MCIMX6Y2.h"
+#include "delay.h"
 
 void beep_init();
+
+void beep_on();
+
+void beep_off();
 
 #endif
