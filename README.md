@@ -6,6 +6,7 @@
 
 LED_BSP: `make led`
 BEEP: `make beep`
+KEY: `make key`
 
 ## some notes
 
@@ -19,6 +20,7 @@ BEEP: `make beep`
 3. LED-STM32规范版本 - [LED_STM32](./LED_STM32/)
 4. LED-BSP工程管理，规范文件目录 - [LED_BSP](./LED_BSP/)
 5. BEEP，蜂鸣器实验 - [BEEP](./BEEP/)
+6. KEY，按键实验 - [KEY](./KEY/)
 
 ## 工程管理
 

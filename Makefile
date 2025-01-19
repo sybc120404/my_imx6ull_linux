@@ -11,14 +11,16 @@ IMX6ULL_LIB_INCLUDE_DIR		:= imx6ull_lib/inc/
 LED := LED_BSP/led.bin
 LED_SDK := LED_SDK/led.bin
 BEEP := BEEP/beep.bin
+KEY := KEY/key.bin
 
-.PHONY: clean all led led_sdk beep
+.PHONY: clean all led led_sdk beep key
 
-all: $(LED) $(LED_SDK) $(BEEP)
+all: $(LED) $(LED_SDK) $(BEEP) $(KEY)
 
 led: $(LED)
 led_sdk: $(LED_SDK)
 beep : $(BEEP)
+key : $(KEY)
 
 $(LED) : imx6ull_lib/obj/ccm.o imx6ull_lib/obj/delay.o imx6ull_lib/obj/gpio.o imx6ull_lib/obj/iomux.o LED_BSP/obj/bsp_led.o LED_BSP/obj/start.o LED_BSP/obj/main.o
 	$(LD) -TLED_BSP/imx6ull.lds -z noexecstack -o LED_BSP/led.elf $^
@@ -34,6 +36,20 @@ $(BEEP) : imx6ull_lib/obj/delay.o BEEP/obj/beep.o BEEP/obj/start.o BEEP/obj/main
 	$(LD) -TBEEP/imx6ull.lds -z noexecstack -o BEEP/beep.elf $^
 	$(OBJCOPY) -O binary -S BEEP/beep.elf $@
 	$(OBJDUMP) -D BEEP/beep.elf > BEEP/beep.dis
+
+$(KEY) : imx6ull_lib/obj/delay.o KEY/obj/key.o KEY/obj/start.o KEY/obj/main.o BEEP/obj/beep.o
+	$(LD) -TKEY/imx6ull.lds -z noexecstack -o KEY/key.elf $^
+	$(OBJCOPY) -O binary -S KEY/key.elf $@
+	$(OBJDUMP) -D KEY/key.elf > KEY/key.dis
+
+KEY/obj/key.o : KEY/bsp/key.c
+	$(CC) -O2 -Wall -nostdlib -I KEY/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+
+KEY/obj/start.o : KEY/project/start.s
+	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
+
+KEY/obj/main.o : KEY/project/main.c
+	$(CC) -O2 -Wall -nostdlib -I KEY/bsp -I BEEP/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 BEEP/obj/beep.o : BEEP/bsp/beep.c
 	$(CC) -O2 -Wall -nostdlib -I BEEP/bsp/ -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
@@ -78,3 +94,4 @@ clean:
 	rm -rf LED_BSP/led.bin LED_BSP/led.elf LED_BSP/led.dis imx6ull_lib/obj/*.o LED_BSP/obj/*.o load.imx
 	rm -rf LED_SDK/led.bin LED_SDK/led.elf LED_SDK/led.dis imx6ull_lib/obj/*.o LED_SDK/obj/*.o load.imx
 	rm -rf BEEP/beep.bin BEEP/beep.elf BEEP/beep.dis imx6ull_lib/obj/*.o BEEP/obj/*.o load.imx
+	rm -rf KEY/key.bin KEY/key.elf KEY/key.dis imx6ull_lib/obj/*.o KEY/obj/*.o load.imx
