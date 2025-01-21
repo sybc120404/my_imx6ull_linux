@@ -3,6 +3,7 @@ CC 				:= $(CROSS_COMPILE)gcc
 LD 				:= $(CROSS_COMPILE)ld
 OBJCOPY 		:= $(CROSS_COMPILE)objcopy
 OBJDUMP 		:= $(CROSS_COMPILE)objdump
+CFLAGS 			:= -Wall -O2 -nostdlib
 
 LED_INCLUDE_DIR				:= LED_BSP/bsp/led/
 LED_SDK_INCLUDE_DIR			:= LED_SDK/bsp/led/
@@ -43,52 +44,52 @@ $(KEY) : imx6ull_lib/obj/delay.o KEY/obj/key.o KEY/obj/start.o KEY/obj/main.o BE
 	$(OBJDUMP) -D KEY/key.elf > KEY/key.dis
 
 KEY/obj/key.o : KEY/bsp/key.c
-	$(CC) -O2 -Wall -nostdlib -I KEY/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I KEY/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 KEY/obj/start.o : KEY/project/start.s
-	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 KEY/obj/main.o : KEY/project/main.c
-	$(CC) -O2 -Wall -nostdlib -I KEY/bsp -I BEEP/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I KEY/bsp -I BEEP/bsp -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 BEEP/obj/beep.o : BEEP/bsp/beep.c
-	$(CC) -O2 -Wall -nostdlib -I BEEP/bsp/ -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I BEEP/bsp/ -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 BEEP/obj/start.o : BEEP/project/start.s
-	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 BEEP/obj/main.o : BEEP/project/main.c
-	$(CC) -O2 -Wall -nostdlib -I BEEP/bsp/ -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I BEEP/bsp/ -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 LED_BSP/obj/bsp_led.o : LED_BSP/bsp/led/bsp_led.c
-	$(CC) -O2 -Wall -nostdlib -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 LED_SDK/obj/led.o : LED_SDK/bsp/led/led.c
-	$(CC) -O2 -Wall -nostdlib -I $(LED_SDK_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(LED_SDK_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 LED_BSP/obj/start.o : LED_BSP/project/start.s
-	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 LED_SDK/obj/start.o : LED_SDK/project/start.s
-	$(CC) -O2 -Wall -nostdlib -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 LED_BSP/obj/main.o : LED_BSP/project/main.c
-	$(CC) -O2 -Wall -nostdlib -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(LED_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 LED_SDK/obj/main.o : LED_SDK/project/main.c
-	$(CC) -O2 -Wall -nostdlib -I $(LED_SDK_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(LED_SDK_INCLUDE_DIR) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 imx6ull_lib/obj/ccm.o : imx6ull_lib/src/ccm.c
-	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 imx6ull_lib/obj/delay.o : imx6ull_lib/src/delay.c
-	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 imx6ull_lib/obj/gpio.o : imx6ull_lib/src/gpio.c
-	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 imx6ull_lib/obj/iomux.o : imx6ull_lib/src/iomux.c
-	$(CC) -O2 -Wall -nostdlib -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
+	$(CC) $(CFLAGS) -I $(IMX6ULL_LIB_INCLUDE_DIR) -c -o $@ $<
 
 clean:
 	rm -rf LED_BSP/led.bin LED_BSP/led.elf LED_BSP/led.dis imx6ull_lib/obj/*.o LED_BSP/obj/*.o load.imx
