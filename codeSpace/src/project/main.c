@@ -2,27 +2,19 @@
 #include "beep.h"
 #include "key.h"
 #include "led.h"
-
-static void clk_enable()
-{
-    CCM->CCGR0 = 0xffffffff;
-    CCM->CCGR1 = 0xffffffff;
-    CCM->CCGR2 = 0xffffffff;
-    CCM->CCGR3 = 0xffffffff;
-    CCM->CCGR4 = 0xffffffff;
-    CCM->CCGR5 = 0xffffffff;
-    CCM->CCGR6 = 0xffffffff;
-}
+#include "clk.h"
 
 int main(void)
 {
-    KEY_STATUS key_sta = KEY_OFF;
+    //KEY_STATUS key_sta = KEY_OFF;
 
     clk_enable();
+    imx6ull_clkInit();
     led_init();
     beep_init();
     key_init();
 
+#if 0
     while(1)
     {
         key_sta = key_get_status();
@@ -38,6 +30,15 @@ int main(void)
             led_off();
             beep_off();
         }
+    }
+#endif
+
+    while(1)
+    {
+        led_on();
+        delay(100);
+        led_off();
+        delay(100);
     }
 
     return 0;

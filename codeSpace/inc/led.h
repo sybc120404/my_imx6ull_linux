@@ -5,8 +5,15 @@
 #include "MCIMX6Y2.h"
 #include "gpio.h"
 
+typedef enum led_status
+{
+    LED_ON = 0U,
+    LED_OFF = 1U,
+}LED_STATUS;
+
 void led_init();
 void led_on();
 void led_off();
+void led_switch(LED_STATUS status);
 
 #endif

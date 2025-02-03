@@ -23,3 +23,15 @@ void led_off()
 {
     gpio_pinWrite(GPIO1, 3, 1);
 }
+
+void led_switch(LED_STATUS status)
+{
+    if(LED_ON == status)
+    {
+        led_on();
+    }
+    else
+    {
+        led_off();
+    }
+}

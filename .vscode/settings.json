@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "fsl_common.h": "c"
     },
     "makefile.configureOnOpen": false
 }
