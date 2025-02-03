@@ -14,20 +14,28 @@
 
 #include "beep.h"
 
+/**
+ * @brief Function Definition
+ */
+
 void beep_init()
 {
+    gpio_pin_config_t config = {};
+
     IOMUXC_SetPinMux(IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01, 0);
     IOMUXC_SetPinConfig(IOMUXC_SNVS_SNVS_TAMPER1_GPIO5_IO01, 0x10b0);
-    GPIO5->GDIR |= 1 << 1;
-    GPIO5->DR |= 1 << 1;
+    
+    config.direction = GPIO_DigitalOutput;
+    config.outputLogic = 1;
+    gpio_init(GPIO5, 1, &config);
 }
 
 void beep_on()
 {
-    GPIO5->DR &= ~(1 << 1);
+    gpio_pinWrite(GPIO5, 1, 0);
 }
 
 void beep_off()
 {
-    GPIO5->DR |= 1 << 1;
+    gpio_pinWrite(GPIO5, 1, 1);
 }

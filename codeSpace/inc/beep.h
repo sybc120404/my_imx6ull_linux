@@ -14,9 +14,15 @@
 /**
  * @brief Include files
  */
+
 #include "fsl_iomuxc.h"
 #include "MCIMX6Y2.h"
 #include "delay.h"
+#include "gpio.h"
+
+/**
+ * @brief Function Declaration
+ */
 
 void beep_init();
 

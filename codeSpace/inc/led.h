@@ -3,6 +3,7 @@
 
 #include "fsl_iomuxc.h"
 #include "MCIMX6Y2.h"
+#include "gpio.h"
 
 void led_init();
 void led_on();

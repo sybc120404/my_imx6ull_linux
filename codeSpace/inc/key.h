@@ -1,9 +1,14 @@
 #ifndef __KEY_H
 #define __KEY_H
 
+/**
+ * @brief Include files
+ */
+
 #include "fsl_iomuxc.h"
 #include "MCIMX6Y2.h"
 #include "delay.h"
+#include "gpio.h"
 
 typedef enum
 {
