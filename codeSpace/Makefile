@@ -50,4 +50,4 @@ $(COBJS) : $(OBJECT_DIR)%.o : %.c
 	$(CC) $(CFLAGS) $(CINCLUDE) -c -o $@ $<
 
 clean:
-	rm -rf $(TARGET_DIR)$(TARGET)* $(OBJS)
+	rm -rf $(TARGET_DIR)$(TARGET)* $(OBJS) load.imx

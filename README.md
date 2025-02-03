@@ -1,34 +1,11 @@
 # my_imx6ull_linux
 
-记录I.MX6ULL_LINUX开发板使用
-
-各工程构建目标产物命令：
-
-LED_BSP: `make led`
-BEEP: `make beep`
-KEY: `make key`
+本工程记录I.MX6ULL_LINUX开发板使用
 
 ## some notes
 
 1. Makefile基本知识 - [Makefile](./notes/Makefile_note/)
 2. NXP官方库函数 - [NXP_LIB](./notes/nxp_lib_note/)
-
-## table of contents
-
-1. LED汇编 - [LED_COMPILATION](./LED_COMPILATION/)
-2. LED_C - [LED_C](./LED_C/)
-3. LED-STM32规范版本 - [LED_STM32](./LED_STM32/)
-4. LED-BSP工程管理，规范文件目录 - [LED_BSP](./LED_BSP/)
-5. BEEP，蜂鸣器实验 - [BEEP](./BEEP/)
-6. KEY，按键实验 - [KEY](./KEY/)
-
-## 工程管理
-
-(13Jan25)
-1. 抽象出公用库，位于MY_LIB目录下
-2. 每个例程的相关代码，放在单独一个文件目录下
-3. `Makefile`文件仅在第一级目录下，根据需要生成每个例程的目标
-4. DBG等库以静态库的方式加载
 
 ## 烧写bin文件
 
