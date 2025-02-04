@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    //KEY_STATUS key_sta = KEY_OFF;
+    KEY_STATUS key_sta = KEY_OFF;
 
     clk_enable();
     imx6ull_clkInit();
@@ -14,7 +14,7 @@ int main(void)
     beep_init();
     key_init();
 
-#if 0
+#if 1
     while(1)
     {
         key_sta = key_get_status();
@@ -32,14 +32,6 @@ int main(void)
         }
     }
 #endif
-
-    while(1)
-    {
-        led_on();
-        delay(100);
-        led_off();
-        delay(100);
-    }
 
     return 0;
 }
