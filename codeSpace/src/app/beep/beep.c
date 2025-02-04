@@ -39,3 +39,17 @@ void beep_off()
 {
     gpio_pinWrite(GPIO5, 1, 1);
 }
+
+void beep_switch(BEEP_STATUS status)
+{
+    if(BEEP_ON == status)
+    {
+        beep_on();
+    }
+    else if(BEEP_OFF == status)
+    {
+        beep_off();
+    }
+
+    return;
+}

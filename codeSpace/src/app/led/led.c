@@ -30,7 +30,7 @@ void led_switch(LED_STATUS status)
     {
         led_on();
     }
-    else
+    else if(LED_OFF == status)
     {
         led_off();
     }

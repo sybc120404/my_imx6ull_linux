@@ -84,3 +84,32 @@ SCTLR寄存器用于控制MMU和ICache, DCache开关
 ![VBAR](https://github.com/sybc120404/image4md/blob/main/VBAR.png)
 
 - DSB/ISB指令，用于清洗流水线，前面的指令都执行完才会执行后面的指令
+
+### IRQ中断函数
+
+1. 保存现场，包括lr，r0-r3， r12，spsr
+2. GIC寄存器组
+
+![GIC](https://github.com/sybc120404/image4md/blob/main/GIC.png)
+
+3. 返回中断前继续执行
+
+对于三级流水线，pc是当前执行指令地址+8，也就是取值-译码-执行，程序在取指时，pc保存的是执行的地址，中断结束后返回必须回来执行译码
+
+```
+subs pc, lr, #0x4       /* lr-4赋值给pc */
+```
+
+### 6ULL中断设置
+
+GPIO中断
+
+1. 首先需要设置GPIO的中断触发方式，设置GPIO_ICR1/ICR2寄存器，触发方式包括低电平、高电平、上升沿和下降沿
+2. 使能GPIO对应的中断，设置GPIO_IMR寄存器
+3. 处理完中断后，需要清除中断标志位，也就是设置GPIO_ISR寄存器
+
+GIC配置
+
+1. 使能对应中断ID，GPIO1_18对应67+32
+2. 可设置中断优先级
+3. 注册GOIO1_IO18中断处理函数

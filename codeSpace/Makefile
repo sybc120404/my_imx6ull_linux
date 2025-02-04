@@ -6,6 +6,7 @@ SOURCE_DIR		:=	asm/	\
 					src/app/beep	\
 					src/app/key		\
 					src/app/led		\
+					src/app/ext_interrupt	\
 					src/platform 	\
 					src/project
 TARGET_DIR		:= 	target/

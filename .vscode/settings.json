@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "gpio.h": "c",
-        "fsl_common.h": "c"
+        "fsl_common.h": "c",
+        "ext_interrupt.h": "c"
     },
     "makefile.configureOnOpen": false
 }

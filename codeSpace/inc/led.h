@@ -7,8 +7,8 @@
 
 typedef enum led_status
 {
-    LED_ON = 0U,
-    LED_OFF = 1U,
+    LED_OFF = 0U,
+    LED_ON = 1U,
 }LED_STATUS;
 
 void led_init();

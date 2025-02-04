@@ -23,11 +23,21 @@
 /**
  * @brief Function Declaration
  */
+typedef enum{
+    BEEP_OFF = 0U,
+    BEEP_ON = 1U,
+}BEEP_STATUS;
+
+/**
+ * @brief Function Declaration
+ */
 
 void beep_init();
 
 void beep_on();
 
 void beep_off();
+
+void beep_switch(BEEP_STATUS status);
 
 #endif
