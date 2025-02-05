@@ -7,6 +7,7 @@ SOURCE_DIR		:=	asm/	\
 					src/app/key		\
 					src/app/led		\
 					src/app/ext_interrupt	\
+					src/app/epit	\
 					src/platform 	\
 					src/project
 TARGET_DIR		:= 	target/
