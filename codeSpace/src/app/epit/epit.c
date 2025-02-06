@@ -86,3 +86,17 @@ void epit1_init(uint32_t frac, uint32_t value)
 
     return;
 }
+
+/* 关闭EPIT1定时器 */
+void epit1_stop()
+{
+    EPIT1->CR &= ~(1 << 0);
+}
+
+/* 重启EPIT1定时器 */
+void epit1_restart(uint32_t value)
+{
+    EPIT1->CR &= ~(1 << 0);     /* 先关闭定时器 */
+    EPIT1->LR = value;          /* 设置初始化值 */
+    EPIT1->CR |= (1 << 0);      /* 开启定时器 */
+}

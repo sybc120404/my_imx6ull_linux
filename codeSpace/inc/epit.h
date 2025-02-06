@@ -27,4 +27,10 @@
 /* 初始化EPIT */
 void epit1_init(uint32_t frac, uint32_t value);
 
+/* 关闭EPIT1定时器 */
+void epit1_stop();
+
+/* 重启EPIT1定时器 */
+void epit1_restart(uint32_t value);
+
 #endif

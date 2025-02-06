@@ -16,8 +16,17 @@ typedef enum
     KEY_OFF
 }KEY_STATUS;
 
+/*
+    Function Declaration
+*/
+
 void key_init(void);
 
 KEY_STATUS key_get_status(void);
+
+/* KEY_FILTER */
+
+/* keyFilter初始化 */
+void key_filter_init();
 
 #endif
