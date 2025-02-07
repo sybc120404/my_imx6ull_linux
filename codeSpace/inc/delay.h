@@ -15,8 +15,10 @@
 extern "C" {
 #endif
 
+#include "common.h"
+
 /**
- * @brief Function declaration for the GPIO module.
+ * @brief Function declaration for the delay module.
  */
 
 /**
@@ -38,6 +40,12 @@ void delay_short(volatile unsigned int n);
  * @param n The number of milliseconds to delay.
  */
 void delay(volatile unsigned int n);
+
+/* us级别的时延，必须确保已调用gpt1_counter_init!!! */
+void delay_us(uint32_t us);
+
+/* 毫秒级别延时 */
+void delay_ms(uint32_t ms);
 
 #ifdef __cplusplus
 }

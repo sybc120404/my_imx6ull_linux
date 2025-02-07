@@ -5,10 +5,11 @@
 #include "clk.h"
 #include "ext_interrupt.h"
 #include "epit.h"
+#include "gpt.h"
 
 int main(void)
 {
-    LED_STATUS led = LED_OFF;
+    static LED_STATUS led = LED_OFF;
 
     interrupt_init();
     clk_enable();
@@ -17,12 +18,13 @@ int main(void)
     beep_init();
     key_init();
     key_filter_init();
+    gpt1_counter_init();
 
     while(1)
     {
         led = !led;
         led_switch(led);
-        delay(500);
+        delay_ms(500);
     }
 
     return 0;
