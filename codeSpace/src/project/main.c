@@ -8,6 +8,7 @@
 #include "gpt.h"
 #include "uart.h"
 #include "stdio.h"
+#include "debug.h"
 
 int main(void)
 {
@@ -17,12 +18,17 @@ int main(void)
     interrupt_init();
     clk_enable();
     imx6ull_clkInit();
+    uart1_init();
+
+    DBG_ALZ_BRIEF("\r\napp init start...");
+
     led_init();
     beep_init();
     key_init();
     key_filter_init();
     gpt1_counter_init();
-    uart1_init();
+
+    DBG_ALZ_BRIEF("app init done.");
 
     while(1)
     {
