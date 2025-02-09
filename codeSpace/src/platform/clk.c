@@ -96,4 +96,8 @@ void imx6ull_clkInit()
     /* 设置PER_CLK_ROOT=66MHz */
     CCM->CSCMR1 &= ~(1 << 6);
     CCM->CSCMR1 &= ~(0x3f);     /* 1分频 */
+
+    /* UART1添加，设置UART1_ROOT为80MHz */
+    CCM->CSCDR1 &= ~(1 << 6);
+    CCM->CSCDR1 &= ~(0x3f);
 }

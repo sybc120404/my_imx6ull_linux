@@ -1,5 +1,6 @@
 # files path of project
-INCLUDE_DIR		:= 	inc/
+INCLUDE_DIR		:= 	inc
+INCLUDE_DIR_STD	:=	stdio/include
 OBJECT_DIR		:= 	obj/
 ASSEMBLY_DIR	:= 	asm/
 SOURCE_DIR		:=	asm/	\
@@ -10,8 +11,10 @@ SOURCE_DIR		:=	asm/	\
 					src/app/epit	\
 					src/app/gpt		\
 					src/platform 	\
-					src/project
+					src/project		\
+					stdio/lib
 TARGET_DIR		:= 	target/
+LIB_PATH		:= 	-lgcc -L /usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4/
 
 SFILES			:= $(foreach dir, $(SOURCE_DIR), $(wildcard $(dir)/*.s))
 CFILES			:= $(foreach dir, $(SOURCE_DIR), $(wildcard $(dir)/*.c))
@@ -32,7 +35,7 @@ LD 				:= $(CROSS_COMPILE)ld
 OBJCOPY 		:= $(CROSS_COMPILE)objcopy
 OBJDUMP 		:= $(CROSS_COMPILE)objdump
 CFLAGS 			:= -Wall -O2 -nostdlib
-CINCLUDE		:= -I $(INCLUDE_DIR)
+CINCLUDE		:= -I $(INCLUDE_DIR) -I $(INCLUDE_DIR_STD)
 
 
 
@@ -42,15 +45,15 @@ TARGET   		:= main
 .PHONY: clean
 
 $(TARGET_DIR)$(TARGET).bin : $(OBJS)
-	$(LD) -T$(LDFILE) -o $(TARGET_DIR)$(TARGET).elf $^
+	$(LD) -T$(LDFILE) -o $(TARGET_DIR)$(TARGET).elf $^ $(LIB_PATH)
 	$(OBJCOPY) -O binary -S $(TARGET_DIR)$(TARGET).elf $@
 	$(OBJDUMP) -D -m arm $(TARGET_DIR)$(TARGET).elf > $(TARGET_DIR)$(TARGET).dis
 
 $(SOBJS) : $(OBJECT_DIR)%.o : %.s
-	$(CC) $(CFLAGS) $(CINCLUDE) -c -o $@ $<
+	$(CC) $(CFLAGS) $(CINCLUDE) -fno-builtin -c -o $@ $<
 
 $(COBJS) : $(OBJECT_DIR)%.o : %.c
-	$(CC) $(CFLAGS) $(CINCLUDE) -c -o $@ $<
+	$(CC) $(CFLAGS) $(CINCLUDE) -fno-builtin -Wa,-mimplicit-it=thumb -c -o $@ $<
 
 clean:
 	rm -rf $(TARGET_DIR)$(TARGET)* $(OBJS) load.imx

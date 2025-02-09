@@ -6,10 +6,13 @@
 #include "ext_interrupt.h"
 #include "epit.h"
 #include "gpt.h"
+#include "uart.h"
+#include "stdio.h"
 
 int main(void)
 {
-    static LED_STATUS led = LED_OFF;
+    int a = 0;
+    int b = 0;
 
     interrupt_init();
     clk_enable();
@@ -19,13 +22,20 @@ int main(void)
     key_init();
     key_filter_init();
     gpt1_counter_init();
+    uart1_init();
 
     while(1)
     {
-        led = !led;
-        led_switch(led);
-        delay_ms(500);
+        printf("Please enter two nums, split by blankspace: ");
+        scanf("%d %d", &a, &b);
+        printf("\r\n%d + %d = %d\r\n", a, b, a+b);
     }
 
+    return 0;
+}
+
+/* 解决链接libgcc.a问题 */
+int raise()
+{
     return 0;
 }
