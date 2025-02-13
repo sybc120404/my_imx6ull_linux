@@ -41,3 +41,32 @@ DDR: DOuble Data Rate SDRAM
 1. 对于I.MX6U，DDR的控制器为MMDC。多模支持DDR3/DDR3L LPDDR2，都是16bit
 2. MMDC最高支持DDR3频率是400MHz，即800MT/s
 3. MMDC提供DDR3连接信号，6ULL为DDR提供专用IO
+
+DDR使用的时钟源为MMDC_CLK_ROOT = PLL2_PFD2 = 396MHz。PFD2在此前的例程已经设置为396MHz，时钟源的选择需要寄存器控制，详见时钟树和代码
+
+## DDR3L初始化与测试
+
+1. ddr_stress_tester配置文件，excel配置ddr参数，realview.inc同步更新
+2. 将realview.inc复制为.inc文件
+3. 通过USB口将.inc的配置信息下载到开发板中
+4. 进行校准
+
+![ddr3](https://github.com/sybc120404/image4md/blob/main/ddr3.png)
+
+```
+Write leveling calibration
+MMDC_MPWLDECTRL0 ch0 (0x021b080c) = 0x00000000
+MMDC_MPWLDECTRL1 ch0 (0x021b0810) = 0x00040004
+
+Read DQS Gating calibration
+MPDGCTRL0 PHY0 (0x021b083c) = 0x0140013C
+MPDGCTRL1 PHY0 (0x021b0840) = 0x00000000
+
+Read calibration
+MPRDDLCTL PHY0 (0x021b0848) = 0x40403034
+
+Write calibration
+MPWRDLCTL PHY0 (0x021b0850) = 0x4040382E
+```
+
+校准后注意修改imxdownload文件寄存器值，否则ddr初始化错误！！
