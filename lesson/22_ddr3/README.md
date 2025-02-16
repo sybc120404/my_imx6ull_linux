@@ -54,19 +54,26 @@ DDR使用的时钟源为MMDC_CLK_ROOT = PLL2_PFD2 = 396MHz。PFD2在此前的例
 ![ddr3](https://github.com/sybc120404/image4md/blob/main/ddr3.png)
 
 ```
-Write leveling calibration
-MMDC_MPWLDECTRL0 ch0 (0x021b080c) = 0x00000000
-MMDC_MPWLDECTRL1 ch0 (0x021b0810) = 0x00040004
+   MMDC registers updated from calibration 
 
-Read DQS Gating calibration
-MPDGCTRL0 PHY0 (0x021b083c) = 0x0140013C
-MPDGCTRL1 PHY0 (0x021b0840) = 0x00000000
+   Write leveling calibration
+   MMDC_MPWLDECTRL0 ch0 (0x021b080c) = 0x00000000
+   MMDC_MPWLDECTRL1 ch0 (0x021b0810) = 0x00070007
 
-Read calibration
-MPRDDLCTL PHY0 (0x021b0848) = 0x40403034
+   Read DQS Gating calibration
+   MPDGCTRL0 PHY0 (0x021b083c) = 0x0140013C
+   MPDGCTRL1 PHY0 (0x021b0840) = 0x00000000
 
-Write calibration
-MPWRDLCTL PHY0 (0x021b0850) = 0x4040382E
+   Read calibration
+   MPRDDLCTL PHY0 (0x021b0848) = 0x40403034
+
+   Write calibration
+   MPWRDLCTL PHY0 (0x021b0850) = 0x4040382E
+
+
+Success: DDR calibration completed!!!
 ```
 
 校准后注意修改imxdownload文件寄存器值，否则ddr初始化错误！！
+
+imxdownload.h的值是大小端相反的！！~！！！填错了板子启动不了！！！！

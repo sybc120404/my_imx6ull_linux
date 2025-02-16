@@ -9,16 +9,21 @@
 #include "uart.h"
 #include "stdio.h"
 #include "debug.h"
+#include "rtc.h"
 
 int main(void)
 {
-    int a = 0;
-    int b = 0;
-
+    LED_STATUS led = LED_OFF;
+    rtc_date_time dateTime = {};
+    
     interrupt_init();
     clk_enable();
     imx6ull_clkInit();
     uart1_init();
+
+    DBG_ALZ_BRIEF("\r\nplatform init start...");
+    
+    rtc_init();
 
     DBG_ALZ_BRIEF("\r\napp init start...");
 
@@ -28,13 +33,16 @@ int main(void)
     key_filter_init();
     gpt1_counter_init();
 
-    DBG_ALZ_BRIEF("app init done.");
+    DBG_ALZ_BRIEF("all init done.\r\n");
 
     while(1)
-    {
-        printf("Please enter two nums, split by blankspace: ");
-        scanf("%d %d", &a, &b);
-        printf("\r\n%d + %d = %d\r\n", a, b, a+b);
+    {   
+        led = !led;
+        led_switch(led);
+        rtc_get_date_time(&dateTime);
+        printf("%d-%d-%d %d:%d:%d\r\n", dateTime.year, dateTime.month, dateTime.day,
+            dateTime.hour, dateTime.minute, dateTime.second);
+        delay_ms(2000);
     }
 
     return 0;
