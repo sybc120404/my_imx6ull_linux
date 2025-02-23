@@ -10,6 +10,7 @@ SOURCE_DIR		:=	asm/	\
 					src/app/ext_interrupt	\
 					src/app/epit	\
 					src/app/gpt		\
+					src/app/ap3216c	\
 					src/platform 	\
 					src/project		\
 					stdio/lib

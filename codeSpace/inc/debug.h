@@ -13,6 +13,9 @@
     macro definition
 */
 
+#define IN  
+#define OUT 
+
 /* COLOR */
 /*
     格式：
@@ -60,4 +63,27 @@
     printf(DBG_FMT_BOLD_RED_YEL "[%s]<%s, %d> - " format DBG_FMT_END "\r\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__);  \
 }while(0);
 #endif
-#endif
+
+#define PFM_IF_FAIL_RET(expr)   do{ \
+    int rv = 0; \
+    rv = expr;  \
+    if(0 != rv) {   \
+        printf(DBG_FMT_BOLD_RED_YEL "Call <%s,%d> error return %d" DBG_FMT_END "\r\n", __func__, __LINE__, rv); \
+        return rv;  \
+    }\
+}while(0);
+
+/*==========================
+    error code definition
+*/
+
+typedef enum _error_code{
+    ERR_NO_ERROR = 0,       // 正确
+    
+    ERR_BAD_PARAM = 1,      // 参数错误
+    ERR_NULL_POINTER,       // 空指针
+
+    ERR_I2C_ERR = 100,
+}ERR_CODE;
+
+#endif // end of ifdef __DEBUG_H_

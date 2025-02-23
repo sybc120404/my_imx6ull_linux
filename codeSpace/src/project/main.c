@@ -10,11 +10,14 @@
 #include "stdio.h"
 #include "debug.h"
 #include "rtc.h"
+#include "ap3216c.h"
 
 int main(void)
 {
     LED_STATUS led = LED_OFF;
-    rtc_date_time dateTime = {};
+    uint16_t ir = 0;
+    uint16_t ps = 0;
+    uint16_t als = 0;
     
     interrupt_init();
     clk_enable();
@@ -32,17 +35,26 @@ int main(void)
     key_init();
     key_filter_init();
     gpt1_counter_init();
+    
+    ap3216c_init();     // 使用了精确delay，必须在gpt1后init
 
     DBG_ALZ_BRIEF("all init done.\r\n");
 
     while(1)
     {   
-        led = !led;
-        led_switch(led);
-        rtc_get_date_time(&dateTime);
-        printf("%d-%d-%d %d:%d:%d\r\n", dateTime.year, dateTime.month, dateTime.day,
-            dateTime.hour, dateTime.minute, dateTime.second);
-        delay_ms(2000);
+        ap3216c_read_data(&ir, &ps, &als);
+        if(als <= 200)
+        {
+            printf("Sorround is tow dark, led on\r\n");
+            led = LED_ON;
+            led_switch(led);
+        }
+        else
+        {
+            led = !led;
+            led_switch(led);
+        }
+        delay_ms(500);
     }
 
     return 0;
