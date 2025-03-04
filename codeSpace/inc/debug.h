@@ -84,6 +84,9 @@ typedef enum _error_code{
     ERR_NULL_POINTER,       // 空指针
 
     ERR_I2C_ERR = 100,
+
+    ERR_SPI_ERR = 200,
+    ERR_SPI_TIMEOUT,        // SPI通信超时
 }ERR_CODE;
 
 #endif // end of ifdef __DEBUG_H_

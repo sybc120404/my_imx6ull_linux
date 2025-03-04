@@ -100,4 +100,8 @@ void imx6ull_clkInit()
     /* UART1添加，设置UART1_ROOT为80MHz */
     CCM->CSCDR1 &= ~(1 << 6);
     CCM->CSCDR1 &= ~(0x3f);
+
+    /* 设置ECSPI根时钟为PLL3_60MHz */
+    CCM->CSCDR2 &= ~(1 << 18);  // 60MHz
+    CCM->CSCDR2 &= ~(0x3f << 19);   // 1分频
 }
