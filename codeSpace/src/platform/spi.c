@@ -77,13 +77,13 @@ ERR_CODE spi_init(ECSPI_Type *base)
 
 /* SPI发送/接收 */
 /* SPI全双工，读写是一起的，读的时候也必须写一个无效数据 */
-ERR_CODE spi_channel0_rw_byte(ECSPI_Type *base, uint8_t tx_data, uint8_t *rx_data)
+ERR_CODE spi_channel0_rw_byte(ECSPI_Type *base, uint8_t tx_data, OUT uint8_t *rx_data)
 {
     uint32_t rx = 0;
     uint32_t tx = tx_data;
     uint32_t cnt = 0xffffffff;
 
-    if(NULL == base)
+    if(NULL == base || NULL == rx_data)
     {
         return ERR_BAD_PARAM;
     }

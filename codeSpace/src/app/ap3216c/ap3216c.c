@@ -15,6 +15,12 @@
 #include "stdio.h"
 
 /*
+    Gloabl Variables
+*/
+
+AP3216C_DEV ap3216c_dev = {};
+
+/*
     Function Declaration
 */
 
@@ -91,16 +97,11 @@ ERR_CODE ap3216c_write_byte(uint8_t reg, IN uint8_t data)
 }
 
 /* 读取ir ps als数据 */
-ERR_CODE ap3216c_read_data(uint16_t *ir, uint16_t *ps, uint16_t *als)
+ERR_CODE ap3216c_get_data()
 {
     uint8_t buf[6] = {};
     uint8_t i = 0;
     ERR_CODE errCode = 0;
-
-    if(NULL == ir || NULL == ps || NULL == als)
-    {
-        return ERR_BAD_PARAM;
-    }
 
     for(i = 0; i < 6; ++i)
     {
@@ -111,16 +112,16 @@ ERR_CODE ap3216c_read_data(uint16_t *ir, uint16_t *ps, uint16_t *als)
 
     if(buf[0] & 0x80)       // IR和PS数据无效
     {
-        *ir = 0;
-        *ps = 0;
+        ap3216c_dev.ir = 0;
+        ap3216c_dev.ps = 0;
     }
     else
     {
-        *ir = ((uint16_t)buf[1] << 2) | (buf[0] & 0x03);
-        *ps = (((uint16_t)buf[5] & 0x3f) << 4) | (buf[4] & 0x0f);
+        ap3216c_dev.ir = ((uint16_t)buf[1] << 2) | (buf[0] & 0x03);
+        ap3216c_dev.ps = (((uint16_t)buf[5] & 0x3f) << 4) | (buf[4] & 0x0f);
     }
 
-    *als = ((uint16_t)buf[3] << 8) | (buf[2]);
+    ap3216c_dev.als = ((uint16_t)buf[3] << 8) | (buf[2]);
 
     return errCode;
 }

@@ -30,6 +30,25 @@
 
 #define AP3216C_ADDR      (0x1E)      // 从机地址
 
+#define AP3216C_ALS_THRESHOLD_LOW   (128)   // 光照阈值
+
+/*
+    Type Definition
+*/
+
+typedef struct ap3216c_dev_struct
+{
+    uint16_t ir;    // 红外数据
+    uint16_t ps;    // 距离数据
+    uint16_t als;   // 光照数据
+}AP3216C_DEV;
+
+/*
+    Data Declaration
+*/
+
+extern AP3216C_DEV ap3216c_dev;
+
 /*
     Function Declaration
 */
@@ -44,6 +63,6 @@ ERR_CODE ap3216c_read_byte(uint8_t reg, OUT uint8_t *data);
 ERR_CODE ap3216c_write_byte(uint8_t reg, IN uint8_t data);
 
 /* 读取ir ps als数据 */
-ERR_CODE ap3216c_read_data(uint16_t *ir, uint16_t *ps, uint16_t *als);
+ERR_CODE ap3216c_get_data();
 
 #endif

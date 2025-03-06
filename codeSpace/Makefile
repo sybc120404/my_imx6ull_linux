@@ -11,6 +11,7 @@ SOURCE_DIR		:=	asm/	\
 					src/app/epit	\
 					src/app/gpt		\
 					src/app/ap3216c	\
+					src/app/icm20608	\
 					src/platform 	\
 					src/project		\
 					stdio/lib
@@ -36,6 +37,7 @@ LD 				:= $(CROSS_COMPILE)ld
 OBJCOPY 		:= $(CROSS_COMPILE)objcopy
 OBJDUMP 		:= $(CROSS_COMPILE)objdump
 CFLAGS 			:= -Wall -O2 -nostdlib
+FLOAT_CACL_FLAG	:= -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
 CINCLUDE		:= -I $(INCLUDE_DIR) -I $(INCLUDE_DIR_STD)
 
 
@@ -54,7 +56,7 @@ $(SOBJS) : $(OBJECT_DIR)%.o : %.s
 	$(CC) $(CFLAGS) $(CINCLUDE) -fno-builtin -c -o $@ $<
 
 $(COBJS) : $(OBJECT_DIR)%.o : %.c
-	$(CC) $(CFLAGS) $(CINCLUDE) -fno-builtin -Wa,-mimplicit-it=thumb -c -o $@ $<
+	$(CC) $(CFLAGS) $(CINCLUDE) $(FLOAT_CACL_FLAG) -fno-builtin -Wa,-mimplicit-it=thumb -c -o $@ $<
 
 clean:
 	rm -rf $(TARGET_DIR)$(TARGET)* $(OBJS) load.imx

@@ -65,11 +65,20 @@
 #endif
 
 #define PFM_IF_FAIL_RET(expr)   do{ \
-    int rv = 0; \
-    rv = expr;  \
-    if(0 != rv) {   \
-        printf(DBG_FMT_BOLD_RED_YEL "Call <%s,%d> error return %d" DBG_FMT_END "\r\n", __func__, __LINE__, rv); \
-        return rv;  \
+    int _rv = 0; \
+    _rv = expr;  \
+    if(0 != _rv) {   \
+        printf(DBG_FMT_BOLD_RED_YEL "<%s,%d> error occur %d" DBG_FMT_END "\r\n", __func__, __LINE__, _rv); \
+        return _rv;  \
+    }\
+}while(0);
+
+#define SDK_CHECK_RUN(expr)   do{ \
+    int _rv = 0; \
+    _rv = expr;  \
+    if(0 != _rv) {   \
+        printf(DBG_FMT_BOLD_RED_YEL "<%s,%d> Call SDK [%s] error return %d" DBG_FMT_END "\r\n", __func__, __LINE__, #expr, _rv); \
+        return _rv;  \
     }\
 }while(0);
 
@@ -86,6 +95,8 @@ typedef enum _error_code{
     ERR_I2C_ERR = 100,
 
     ERR_SPI_ERR = 200,
+    ERR_SPI_READ_ERR,       // SPI读错误
+    ERR_SPI_WRITE_ERR,      // SPI写错误
     ERR_SPI_TIMEOUT,        // SPI通信超时
 }ERR_CODE;
 
