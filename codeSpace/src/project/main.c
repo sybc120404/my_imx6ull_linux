@@ -12,6 +12,7 @@
 #include "rtc.h"
 #include "ap3216c.h"
 #include "icm20608.h"
+#include "sysLog.h"
 
 /*
  * @description	: 使能I.MX6U的硬件NEON和FPU
@@ -20,8 +21,8 @@
  */
 void imx6ul_hardfpu_enable(void)
 {
-	uint32_t cpacr;
-	uint32_t fpexc;
+	uint32_t cpacr = 0;
+	uint32_t fpexc = 0;
 
 	/* 使能NEON和FPU */
 	cpacr = __get_CPACR();
@@ -29,7 +30,7 @@ void imx6ul_hardfpu_enable(void)
 		   |  (3UL << CPACR_cp10_Pos) | (3UL << CPACR_cp11_Pos);
 	__set_CPACR(cpacr);
 	fpexc = __get_FPEXC();
-	fpexc |= 0x40000000UL;	
+	fpexc |= 0x40000000UL;
 	__set_FPEXC(fpexc);
 
     printf("FPU and NEON init done.\r\n");
@@ -45,6 +46,7 @@ void foxi_init()
 int main(void)
 {
     LED_STATUS led = LED_OFF;
+    uint8_t cnt = 0;
     
     interrupt_init();
     clk_enable();
@@ -57,6 +59,7 @@ int main(void)
     
     imx6ul_hardfpu_enable();
     rtc_init();
+    sys_log_init();
 
     DBG_ALZ_BRIEF("\r\napp init start...");
 
@@ -78,6 +81,7 @@ int main(void)
         ap3216c_get_data();
         if(AP3216C_ALS_THRESHOLD_LOW >= ap3216c_dev.als)
         {
+            sys_log_add(SYS_LOG_LEVEL_INFO, SYS_LOG_MOD_AP3216C, "ALS too low, led on.");
             led = LED_ON;
             led_switch(led);
         }
@@ -87,6 +91,13 @@ int main(void)
             led_switch(led);
         }
 
+        ++ cnt;
+
+        if(cnt == 10)
+        {
+            sys_log_display_all();
+            cnt = 0;
+        }
         delay_ms(500);
     }
 

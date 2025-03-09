@@ -98,6 +98,15 @@ typedef enum _error_code{
     ERR_SPI_READ_ERR,       // SPI读错误
     ERR_SPI_WRITE_ERR,      // SPI写错误
     ERR_SPI_TIMEOUT,        // SPI通信超时
+
+    ERR_SYS_ERROR = 300,    // 系统错误
+
+    ERR_SYS_LOG_ERR = 400,
+    ERR_SYS_LOG_LEVEL_ERR,  // 日志级别错误
+    ERR_SYS_LOG_ID_ERR,     // 日志ID错误
+    ERR_SYS_LOG_STR_ERR,    // 日志内容错误
+    ERR_SYS_LOG_MOD_ERR,    // 日志模块错误
+
 }ERR_CODE;
 
 #endif // end of ifdef __DEBUG_H_
